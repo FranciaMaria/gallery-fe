@@ -1,0 +1,50 @@
+<div  *ngIf="galleries.length" class="container">
+
+	<br>
+
+	<h2>{{ galleries[0].user.firstName }} {{ galleries[0].user.lastName }} galleries</h2>
+
+	<br>
+
+	<div *ngIf="galleries.length" class="row">
+
+		<div
+			*ngFor="let gallery of galleries" 
+			class="card"
+			>
+
+		  <img class="card-img-top" src="{{ gallery.images[0].url }}">
+
+		  <div class="card-body">
+
+		    <a [routerLink]="['/galleries', gallery.id ]" ><h4 class="card-title">{{ gallery.name }}</h4></a>
+		    <a [routerLink]="['/authors', gallery.user.id ]" ><strong>{{ gallery.user.firstName }} {{ gallery.user.lastName }}</strong></a>
+		    <p class="card-text">{{ gallery.description }}</p>
+		    <a [routerLink]="['/galleries', gallery.id ]" class="btn btn-primary">View full gallery</a>
+		    <a 
+		    	*ngIf="gallery.user.id == user?.id "
+		    	[routerLink]="['/edit-gallery', gallery.id ]" 
+		    	class="btn btn-success"
+		    	>
+		    	Edit
+		    </a>
+		    <span *ngIf="user != null" >
+				<button 
+					*ngIf="gallery.user.id == user.id" 
+						(click)="removeGallery(gallery.id)"
+						class="btn btn-danger">
+							Delete
+				</button>
+			</span>
+
+		  </div>
+
+		</div>
+
+	</div>
+
+</div>
+
+<div *ngIf="!galleries.length" class="row">
+	<h3>No galleries found.</h3>
+</div>

@@ -1,0 +1,75 @@
+<br>
+
+<!-- <form #galleryForm="ngForm" (ngSubmit)="submitGallery()"> -->
+	<form #galleryForm="ngForm" (ngSubmit)="submitGallery()">
+
+	<div class="form-group">
+	    <label><strong>Gallery name</strong></label>
+	    <input
+	    	#name="ngModel" 
+	    	[(ngModel)]="gallery.name" 
+	    	name='name' 
+	    	type="text" 
+	    	class="form-control" 
+	    	required
+	    	minLength="2"
+	    	>
+	</div>
+
+	<div class="form-group">
+	    <label><strong>Description</strong></label>
+	    <textarea
+	    	#description="ngModel" 
+	    	[(ngModel)]="gallery.description" 
+	    	name='description' 
+	    	class="form-control" 
+	    	maxLength="1000"
+	    	>
+	    </textarea>
+	</div>
+
+	<button  type="button" (click)="addImage()" class="btn btn-success">+</button>
+
+	<div class="form-group">
+
+		<table *ngIf="gallery?.images" class="table">
+			
+			<thead>
+				<tr>
+					<th>Image url's</th>
+					<th colspan="3"></th>
+				</tr>
+			</thead>
+
+			<tbody >
+				<tr *ngFor="let image of gallery.images; let i = index">
+					<td width="70%">
+						<input
+							#image_{{i}}="ngModel"
+							[(ngModel)]="gallery.images[i].url"
+						   	name="image_{{i}}"
+						   	type="url" 
+						   	class="form-control"
+						   	required
+					    	>
+					</td>
+					<td width="10%">
+						<button (click)="moveImage(i, -1)" [disabled]="i == 0" type="button" class="btn">Move up</button>
+					</td>
+					<td width="10%">
+						<button (click)="moveImage(i, 1)" [disabled]="i == gallery.images.length - 1" type="button" class="btn">Move down</button>
+					</td>
+					<td width="10%">
+						<button *ngIf="gallery?.images.length > 1" (click)="removeImage(i)" type="button" class="btn btn-danger">Remove</button>
+					</td>
+				</tr>
+
+			</tbody>
+
+		</table>
+
+	</div>
+
+	<button type="submit" class="btn btn-primary" [disabled]="!galleryForm.valid" >{{ (gallery.id) ? 'Update' : 'Create' }}</button>
+
+</form>

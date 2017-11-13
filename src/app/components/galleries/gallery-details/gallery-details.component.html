@@ -1,0 +1,85 @@
+<div *ngIf="gallery != null" class="container">
+
+	<br>
+
+	<h2>{{ gallery.name }}</h2><br>
+	<span *ngIf="gallery.user != null">
+		<strong>Author: <a [routerLink]="['/authors', gallery.user?.id ]" >{{ gallery.user?.firstName }} {{ gallery.user?.lastName }}</a></strong><br>
+		<strong> Created at: {{ gallery?.time }}</strong>
+	</span>
+	<p>{{ gallery.description }}</p>
+
+	<div id="carouselImages" class="carousel slide" data-ride="carousel">
+
+	  <div class="carousel-inner">
+
+	    <div *ngFor="let image of gallery?.images" [ngClass]="{ 'carousel-item': true, 'active': image.id == gallery?.images[activeImage].id}" >
+	      <a (click)="(openImage(image.url))" >
+	      	<img class="d-block w-100" src="{{ image.url }}">
+	      </a>
+	    </div>
+
+	    <a class="carousel-control-prev" (click)="changeImage(-1)" role="button" data-slide="prev">
+		  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		  <span class="sr-only">Previous</span>
+		</a>
+
+		<a class="carousel-control-next" (click)="changeImage(1)" role="button" data-slide="next">
+		  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+		  <span class="sr-only">Next</span>
+		</a>
+
+	  </div>
+
+	</div>
+
+	<br>
+
+	<h3 *ngIf="comments.length">Comments:</h3>
+
+	<div *ngIf="comments.length" class="row">
+
+		<br>
+		
+		<ul class="list-group">
+			<li *ngFor="let comment of comments" class="list-group-item">
+				<p>
+					<strong>{{ comment.user?.firstName }} {{ comment.user?.lastName }} @ {{ comment.time }}</strong>
+					<span *ngIf="user != null" >
+						<button 
+							*ngIf="comment.user.id == user.id" 
+							(click)="removeComment(comment.id)"
+							class="btn btn-danger"
+							>
+							Remove comment
+						</button>
+					</span>
+				</p>
+				<p>{{ comment.text }}</p>
+			</li>
+		</ul>
+
+	</div>
+
+	<br>
+
+	<div *ngIf="user != null" class="form-group">
+		<label>Add new comment</label>
+		<textarea
+			[(ngModel)]=newComment
+			name="newComment"
+			class="form-control"
+			maxLength="1000"
+		></textarea>
+		<br>
+		<button
+			[disabled]="newComment == '' || newComment.invalid"
+			(click)="addComment()" class="btn btn-success"
+			>
+			Comment
+		</button>
+	</div>
+
+	<br>
+
+</div>

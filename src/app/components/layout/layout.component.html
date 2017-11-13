@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" >
+        <a class="nav-link" routerLink="/" routerLinkActive="active">All galleries</a>
+      </li>
+      <li class="nav-item" *ngIf="user != null" >
+        <a class="nav-link" [routerLink]="['/authors', user.id ]" routerLinkActive="active">My galleries</a>
+      </li>
+      <li class="nav-item" *ngIf="user != null" >
+        <a class="nav-link" routerLink="/create-gallery" routerLinkActive="active">Create new gallery</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav my-2 my-lg-0">
+      <li class="nav-item" *ngIf="!auth.isAuthenticated">
+        <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+      </li>
+      <li class="nav-item" *ngIf="!auth.isAuthenticated">
+        <a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a>
+      </li>
+      <li class="nav-item" *ngIf="auth.isAuthenticated">
+        <a class="nav-link" (click)="auth.logout()">Logout</a>
+      </li>
+    </ul>
+    <!-- <app-filter (searchEvent)="getGalleries($event); clearView();"></app-filter>  -->
+</nav>
+
+<div class="container">
+    <router-outlet (onUserChange)="reloadUser(event)"></router-outlet>
+</div>
